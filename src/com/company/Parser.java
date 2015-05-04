@@ -8,30 +8,27 @@ import java.util.regex.Pattern;
  */
 public class Parser {
     public static String getCommand(String input) {
-        Pattern getCommandPattern = Pattern.compile("[^0-9]{1,}");
-        Matcher getCommandMatcher = getCommandPattern.matcher(input);
-
-        String command = new String();
-        if (getCommandMatcher.find()) {
-            command = getCommandMatcher.group(0);
-            command = command.trim();
-            return command;
-        }
-        return "";
+        return parseInputByRegex(input, "\\D+");
     }
 
     public static Float getOperand(String input) {
-        Pattern getOperandPattern = Pattern.compile("[0-9]{1,}");
-        Matcher getOperandMatcher = getOperandPattern.matcher(input);
+        try {
+            return Float.valueOf(parseInputByRegex(input, "\\d.*"));
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
 
-        String operandString = new String();
-        if (getOperandMatcher.find()) {
-            operandString = getOperandMatcher.group(0);
-            operandString = operandString.trim();
-            if (operandString.equals("")) {
+    private static String parseInputByRegex(String input, String pattern) {
+        Pattern getPattern = Pattern.compile(pattern);
+        Matcher getMatcher = getPattern.matcher(input);
+        String operand;
+        if (getMatcher.find()) {
+            operand = getMatcher.group(0);
+            operand = operand.trim();
+            if (operand.equals("")) {
                 return null;
             }
-            Float operand = Float.parseFloat(operandString);
             return operand;
 
         }

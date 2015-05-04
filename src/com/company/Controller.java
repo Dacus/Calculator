@@ -21,10 +21,9 @@ public class Controller {
 
     public void execute(String input) {
         String command = Parser.getCommand(input);
-        float operand = 0;
-        try {
-            operand = Parser.getOperand(input);
-        } catch (NullPointerException e) {
+        Float operand;
+        operand = Parser.getOperand(input);
+        if (operand == null) {
             result = calc.executeCommand(command, result);
             return;
         }
